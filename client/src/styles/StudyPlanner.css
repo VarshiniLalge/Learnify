@@ -1,0 +1,835 @@
+
+/* ==========================================
+   AI STUDENT ASSISTANT — STUDY PLANNER
+   Premium Purple + Blue Gradient Theme
+========================================== */
+
+:root {
+    --purple: #7653e8;
+    --purple-dark: #5031b5;
+    --blue: #4388f5;
+    --ink: #282344;
+    --muted: #77748e;
+    --border: #e6e2f5;
+    --surface: #ffffff;
+    --soft-purple: #f2edff;
+    --soft-blue: #edf4ff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+}
+
+#root {
+    min-height: 100%;
+}
+
+/* ==========================================
+   PAGE BACKGROUND
+========================================== */
+
+.study-planner {
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    padding: 42px 24px 70px;
+    overflow: visible;
+    color: var(--ink);
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+    background:
+        radial-gradient(ellipse at 8% 4%,
+            rgba(151, 119, 255, 0.22), transparent 32%),
+        radial-gradient(ellipse at 95% 20%,
+            rgba(76, 145, 255, 0.18), transparent 30%),
+        linear-gradient(135deg, #f7f4ff 0%, #f4f7ff 52%, #eef4ff 100%);
+}
+
+/* ==========================================
+   PAGE HEADER
+========================================== */
+
+.planner-header {
+    max-width: 960px;
+    margin: 0 auto 34px;
+    padding: 32px 34px;
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    color: #ffffff;
+    background: linear-gradient(120deg, #5532b8 0%, #7853e8 48%, #4388f5 100%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 24px;
+    box-shadow: 0 16px 38px rgba(91, 66, 192, 0.22);
+}
+
+.planner-header::after {
+    content: "";
+    position: absolute;
+    width: 210px;
+    height: 210px;
+    right: -65px;
+    top: -95px;
+    border: 1px solid rgba(255, 255, 255, 0.23);
+    border-radius: 50%;
+    box-shadow:
+        0 0 0 24px rgba(255, 255, 255, 0.06),
+        0 0 0 48px rgba(255, 255, 255, 0.04);
+    pointer-events: none;
+}
+
+.planner-header h1 {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 12px;
+    color: #ffffff;
+    font-size: clamp(29px, 4vw, 39px);
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -1px;
+}
+
+.planner-header p {
+    position: relative;
+    z-index: 1;
+    max-width: 660px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* ==========================================
+   MAIN FORM
+========================================== */
+
+.planner-form {
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.93);
+    border: 1px solid rgba(224, 219, 247, 0.95);
+    border-radius: 24px;
+    box-shadow: 0 18px 55px rgba(59, 48, 120, 0.09);
+}
+
+/* ==========================================
+   FORM SECTIONS
+========================================== */
+
+.planner-section {
+    margin-bottom: 24px;
+    padding: 25px;
+    background: linear-gradient(145deg, #ffffff 0%, #fbfaff 100%);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.planner-section:hover {
+    border-color: #cfc1f5;
+    box-shadow: 0 8px 26px rgba(96, 72, 174, 0.07);
+}
+
+.planner-section h2 {
+    margin: 0 0 20px;
+    color: var(--purple-dark);
+    font-size: 19px;
+    font-weight: 750;
+    line-height: 1.5;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 13px;
+    margin-bottom: 20px;
+}
+
+.section-heading h2 {
+    margin: 0;
+}
+
+/* ==========================================
+   FORM INPUTS
+========================================== */
+
+.form-group {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 9px;
+    min-width: 0;
+    margin-bottom: 17px;
+}
+
+.form-group label {
+    color: #3c3558;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    min-height: 47px;
+    padding: 12px 14px;
+    color: #302947;
+    background: #ffffff;
+    border: 1px solid #ded9ef;
+    border-radius: 11px;
+    outline: none;
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #aaa5bc;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 0 4px rgba(118, 83, 232, 0.12);
+}
+
+.form-group small {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* ==========================================
+   TIME AND SUBJECT ROWS
+========================================== */
+
+.time-row,
+.subject-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+}
+
+.time-row .form-group,
+.subject-row .form-group {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ==========================================
+   STUDY DAY SELECTOR
+========================================== */
+
+.study-days {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.day-button {
+    padding: 11px 16px;
+    color: #5d527e;
+    background: #ffffff;
+    border: 1px solid #ddd6f2;
+    border-radius: 11px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 650;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.day-button:hover {
+    color: var(--purple-dark);
+    border-color: #9b80eb;
+    transform: translateY(-2px);
+}
+
+.day-button.selected {
+    color: #ffffff;
+    background: linear-gradient(120deg, #8059e8, #5634b8);
+    border-color: transparent;
+    box-shadow: 0 5px 14px rgba(86, 52, 184, 0.23);
+}
+
+/* ==========================================
+   SUBJECT CARDS
+========================================== */
+
+.subject-card {
+    margin-bottom: 17px;
+    padding: 22px;
+    background: #ffffff;
+    border: 1px solid #e5dff5;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(62, 47, 125, 0.035);
+    animation: subjectAppear 0.35s ease both;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.subject-card:hover {
+    border-color: #c6b5f1;
+    box-shadow: 0 8px 22px rgba(81, 56, 157, 0.07);
+}
+
+.subject-card .subject-row {
+    margin-bottom: 8px;
+}
+
+.subject-card .form-group {
+    margin-bottom: 14px;
+}
+
+/* ==========================================
+   ADD SUBJECT BUTTON
+========================================== */
+
+.add-subject-button {
+    padding: 11px 16px;
+    color: #5b3ab6;
+    background: linear-gradient(120deg, #f2ecff, #edf2ff);
+    border: 1px solid #d9cef8;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-subject-button:hover {
+    background: linear-gradient(120deg, #e8deff, #e2ebff);
+    transform: translateY(-1px);
+}
+
+/* ==========================================
+   REMOVE SUBJECT BUTTON
+========================================== */
+
+.remove-subject-button {
+    margin-top: 4px;
+    padding: 9px 13px;
+    color: #b82f45;
+    background: #fff2f4;
+    border: 1px solid #f0ccd2;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.remove-subject-button:hover {
+    background: #ffe5e9;
+    border-color: #e9a6b2;
+}
+
+/* ==========================================
+   ERROR MESSAGE
+========================================== */
+
+.planner-error {
+    margin: 0 0 20px;
+    padding: 15px 17px;
+    color: #ad273b;
+    background: #fff0f2;
+    border: 1px solid #f0c5cc;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* ==========================================
+   GENERATE PLAN BUTTON
+========================================== */
+
+.generate-plan-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 56px;
+    padding: 15px 22px;
+    color: #ffffff;
+    background: linear-gradient(110deg, #8b65f0 0%, #6845d0 48%, #4388f5 100%);
+    border: none;
+    border-radius: 13px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 750;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    box-shadow: 0 9px 23px rgba(101, 69, 204, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.generate-plan-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 13px 28px rgba(101, 69, 204, 0.34);
+}
+
+.generate-plan-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.generate-plan-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* ==========================================
+   GENERATED PLAN CONTAINER
+========================================== */
+
+.generated-plan {
+    width: 100%;
+    max-width: 960px;
+    margin: 36px auto 0;
+    padding: 30px;
+    overflow-wrap: anywhere;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid #e4def5;
+    border-radius: 24px;
+    box-shadow: 0 18px 50px rgba(59, 48, 120, 0.1);
+    scroll-margin-top: 30px;
+    animation: planAppear 0.5s ease both;
+}
+
+/* ==========================================
+   PLAN TITLE
+========================================== */
+
+.plan-title {
+    margin-bottom: 25px;
+    padding: 27px;
+    background: linear-gradient(120deg, #eee6ff 0%, #e9efff 55%, #e5f1ff 100%);
+    border: 1px solid #ded7f7;
+    border-radius: 17px;
+}
+
+.plan-title h2 {
+    margin: 0 0 11px;
+    color: #5032b1;
+    font-size: 25px;
+    line-height: 1.45;
+}
+
+.plan-title p {
+    margin: 0;
+    color: #6e6884;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* ==========================================
+   DAILY PLAN CARDS
+========================================== */
+
+.plan-day {
+    margin-bottom: 23px;
+    padding: 23px;
+    background: linear-gradient(145deg, #fbfaff, #f7f9ff);
+    border: 1px solid #e5e0f4;
+    border-radius: 17px;
+    animation: dayAppear 0.4s ease both;
+}
+
+.plan-day:last-child {
+    margin-bottom: 0;
+}
+
+.plan-day-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 19px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e4def4;
+}
+
+.plan-day-header h3 {
+    margin: 0;
+    color: #5435b5;
+    font-size: 19px;
+    font-weight: 750;
+}
+
+.plan-day-header span {
+    padding: 7px 11px;
+    color: #6045b1;
+    background: linear-gradient(120deg, #eee7ff, #e9f0ff);
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* ==========================================
+   STUDY SESSION CARDS
+========================================== */
+
+.plan-session {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 15px;
+    padding: 19px;
+    background: #ffffff;
+    border: 1px solid #e6e1f1;
+    border-radius: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.plan-session:last-child {
+    margin-bottom: 0;
+}
+
+.plan-session:hover {
+    border-color: #c5b5f1;
+    box-shadow: 0 7px 19px rgba(78, 55, 150, 0.07);
+    transform: translateY(-2px);
+}
+
+/* Session time */
+
+.session-time {
+    flex: 0 0 135px;
+    padding: 12px 10px;
+    color: #5838b3;
+    background: linear-gradient(145deg, #eee7ff, #e9efff);
+    border: 1px solid #e1d8fa;
+    border-radius: 11px;
+    font-size: 12px;
+    font-weight: 750;
+    line-height: 1.7;
+    text-align: center;
+}
+
+/* Session details */
+
+.session-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.session-details h4 {
+    margin: 0 0 10px;
+    color: #302747;
+    font-size: 16px;
+    font-weight: 750;
+    line-height: 1.55;
+}
+
+.session-details p {
+    margin: 7px 0;
+    color: #6b657f;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.session-details p strong {
+    color: #493671;
+}
+
+/* Learning points */
+
+.session-details ul {
+    margin: 10px 0 14px;
+    padding-left: 21px;
+}
+
+.session-details li {
+    margin-bottom: 7px;
+    color: #655f79;
+    font-size: 13px;
+    line-height: 1.75;
+}
+
+.session-details li::marker {
+    color: #7957d9;
+}
+
+/* Activity labels */
+
+.session-details span {
+    display: inline-block;
+    margin: 6px 6px 0 0;
+    padding: 6px 10px;
+    color: #3f5f9d;
+    background: #edf3ff;
+    border: 1px solid #dfe9ff;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* ==========================================
+   REVISION AND STUDY TIPS
+========================================== */
+
+.plan-extra {
+    margin-top: 24px;
+    padding: 23px;
+    background: linear-gradient(120deg, #f4edff, #edf4ff);
+    border: 1px solid #e0d8f6;
+    border-radius: 16px;
+}
+
+.plan-extra h3 {
+    margin: 0 0 12px;
+    color: #5134ae;
+    font-size: 18px;
+}
+
+.plan-extra p,
+.plan-extra li {
+    color: #655e79;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.plan-extra p {
+    margin-bottom: 0;
+}
+
+.plan-extra ul {
+    margin: 0;
+    padding-left: 22px;
+}
+
+.plan-extra li {
+    margin-bottom: 7px;
+}
+
+/* ==========================================
+   ANIMATIONS
+========================================== */
+
+@keyframes planAppear {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes dayAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes subjectAppear {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================
+   TABLET RESPONSIVENESS
+========================================== */
+
+@media (max-width: 768px) {
+    .study-planner {
+        padding: 28px 16px 45px;
+    }
+
+    .planner-header {
+        padding: 27px;
+    }
+
+    .planner-form,
+    .generated-plan {
+        padding: 22px;
+    }
+
+    .planner-section {
+        padding: 20px;
+    }
+
+    .plan-day {
+        padding: 18px;
+    }
+}
+
+/* ==========================================
+   MOBILE RESPONSIVENESS
+========================================== */
+
+@media (max-width: 520px) {
+    .study-planner {
+        padding: 20px 12px 35px;
+    }
+
+    .planner-header {
+        margin-bottom: 22px;
+        padding: 24px 20px;
+        border-radius: 19px;
+        text-align: left;
+    }
+
+    .planner-header h1 {
+        font-size: 28px;
+    }
+
+    .planner-header p {
+        font-size: 13px;
+    }
+
+    .planner-form,
+    .generated-plan {
+        padding: 13px;
+        border-radius: 17px;
+    }
+
+    .planner-section {
+        margin-bottom: 17px;
+        padding: 15px;
+        border-radius: 13px;
+    }
+
+    .planner-section h2 {
+        font-size: 17px;
+    }
+
+    .time-row,
+    .subject-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .time-row .form-group,
+    .subject-row .form-group {
+        width: 100%;
+    }
+
+    .study-days {
+        gap: 8px;
+    }
+
+    .day-button {
+        padding: 9px 11px;
+        font-size: 12px;
+    }
+
+    .section-heading {
+        align-items: flex-start;
+    }
+
+    .subject-card {
+        padding: 15px;
+    }
+
+    .plan-title {
+        padding: 18px;
+    }
+
+    .plan-title h2 {
+        font-size: 20px;
+    }
+
+    .plan-day {
+        padding: 14px;
+    }
+
+    .plan-day-header h3 {
+        font-size: 16px;
+    }
+
+    .plan-session {
+        flex-direction: column;
+        gap: 13px;
+        padding: 14px;
+    }
+
+    .session-time {
+        flex: auto;
+        width: 100%;
+        text-align: left;
+    }
+
+    .session-details h4 {
+        font-size: 15px;
+    }
+
+    .plan-extra {
+        padding: 16px;
+    }
+
+    .generate-plan-button {
+        font-size: 14px;
+    }
+}
+
+/* ==========================================
+   ACCESSIBILITY AND SCROLLING
+========================================== */
+
+button:focus-visible {
+    outline: 3px solid #a993f0;
+    outline-offset: 3px;
+}
+
+html,
+body,
+#root {
+    min-height: 100%;
+    height: auto;
+    overflow-y: auto;
+}
+
+.study-planner,
+.generated-plan {
+    overflow: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

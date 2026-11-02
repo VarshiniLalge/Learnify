@@ -1,0 +1,17 @@
+.message{
+    max-width:70%;
+    padding:12px 16px;
+    margin:10px 0;
+    border-radius:15px;
+}
+
+.user-message{
+    margin-left:auto;
+    background:var(--primary);
+    color:white;
+}
+
+.bot-message{
+    background:white;
+    border:1px solid var(--border);
+}
