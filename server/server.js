@@ -19,7 +19,10 @@ const summaryRoutes = require("./routes/summaryRoutes");
 
 app.use(
     cors({
-        origin: "http://localhost:3000",
+        origin: [
+            "http://localhost:3000",
+            "https://learnify-frontend.vercel.app",
+        ],
         credentials: true,
     })
 );
@@ -48,7 +51,7 @@ app.get("/server-test", (_req, res) => {
 });
 
 app.get("/", (req, res) => {
-    res.send("🚀 AI Chatbot Backend is running...");
+    res.send("🚀 learnify Backend is running...");
 });
 
 const PORT = process.env.PORT || 5000;
