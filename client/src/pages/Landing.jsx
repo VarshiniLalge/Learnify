@@ -11,7 +11,7 @@ function Landing(){
             <nav className="landing-navbar">
                 <div className="landing-logo">
                     <img src={logo} alt="Logo" />
-                    <h2>Leanify</h2>
+                    <h2>Learnify</h2>
                 </div>
                 <div className="landing-links">
                 </div>
