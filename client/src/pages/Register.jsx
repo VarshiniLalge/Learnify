@@ -90,7 +90,7 @@ const goToLogin=()=>{
                     </div>
 
                     <h1>
-                        Welcome to <span>AI Chatbot</span>
+                        Welcome to <span>learnify</span>
                     </h1>
 
                     <p>

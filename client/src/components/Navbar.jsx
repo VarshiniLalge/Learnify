@@ -7,8 +7,8 @@ function Navbar(){
     return (
         <nav className="navbar">
             <div className="navbar-left">
-                <img src={logo} alt="AI Chatbot Logo" className="logo"/>
-                <h2>🚀AI Chatbot</h2>
+                <img src={logo} alt="learnify Logo" className="logo"/>
+                <h2>🚀Learnify</h2>
             </div>
             <div className="navbar-right">
                 <FiSettings className="nav-icon"/>

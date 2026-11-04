@@ -11,7 +11,7 @@ function Landing(){
             <nav className="landing-navbar">
                 <div className="landing-logo">
                     <img src={logo} alt="Logo" />
-                    <h2>AI Chatbot</h2>
+                    <h2>Leanify</h2>
                 </div>
                 <div className="landing-links">
                 </div>
@@ -34,7 +34,7 @@ function Landing(){
             </section>
             <section className="features">
                 <div className="feature-card">🤖
-<h3>AI Chatbot</h3>
+<h3>Learnify</h3>
                 <p>Ask questions and get instant AI answers</p></div>
                 <div className="feature-card">📚<h3>Smart Learning</h3>
                 <p>Learn Progarmming</p></div>
