@@ -21,7 +21,7 @@ app.use(
     cors({
         origin: [
             "http://localhost:3000",
-            "https://learnify-frontend.vercel.app",
+            "https://learnify-client-two.vercel.app",
         ],
         credentials: true,
     })
