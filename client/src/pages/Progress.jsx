@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import "../styles/Progress.css";
 
-const API_URL = "http://localhost:5000/api/progress";
+const API_URL = "https://learnify-backend-x592.onrender.com/api/progress";
 
 
 const getStoredUserId = () => {

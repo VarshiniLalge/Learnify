@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_KEY ="http://localhost:5000/api/planner";
+const API_KEY ="https://learnify-backend-x592.onrender.com/api/planner";
 
 export const generateStudyPlan = async (plannerData) => {
     const token = localStorage.getItem("token");

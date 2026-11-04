@@ -146,7 +146,7 @@ const StudyPlanner = () => {
             };
 
             const response = await fetch(
-                "http://localhost:5000/api/planner/generate",
+                "https://learnify-backend-x592.onrender.com/api/planner/generate",
                 {
                     method: "POST",
                     headers: {

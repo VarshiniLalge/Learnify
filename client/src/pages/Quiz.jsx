@@ -32,7 +32,7 @@ const Quiz =()=>{
             setSubmitted(false);
             setResult(null);
 
-            const response = await fetch("http://localhost:5000/api/quiz/generate",
+            const response = await fetch("https://learnify-backend-x592.onrender.com/api/quiz/generate",
                 {
                     method:"POST",
                     headers:{
