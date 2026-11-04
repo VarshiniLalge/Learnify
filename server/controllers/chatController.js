@@ -16,7 +16,7 @@ const sendMessage= async(req,res)=>{
         }
         const currentConversationId=conversationId||`conversation_${Date.now()}`;
         const response=await ai.models.generateContent({
-            model:"gemini-3.8-flash",
+            model:"gemini-2.5-flash",
             contents:message,
             config:{
                 systemInstruction:
