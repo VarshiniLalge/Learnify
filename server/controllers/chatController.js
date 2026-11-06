@@ -1,76 +1,113 @@
 const mongoose = require("mongoose");
+const OpenAI = require("openai");
 
-const Chat =require("../models/Chat");
-const { GoogleGenAI } =require("@google/genai");
-const ai=new GoogleGenAI({
-    apiKey:process.env.GEMINI_API_KEY,
+const Chat = require("../models/Chat");
+
+// Initialize Grok API
+const ai = new OpenAI({
+    apiKey: process.env.GROK_API_KEY,
+    baseURL: "https://api.x.ai/v1",
 });
-const sendMessage= async(req,res)=>{
-    try{
+
+// =====================================
+// SEND CHAT MESSAGE USING GROK
+// =====================================
+const sendMessage = async (req, res) => {
+    try {
         console.log("REQUEST BODY:", req.body);
-        const{userId,message,conversationId}=req.body;
-        if(!userId||!message){
+
+        const { userId, message, conversationId } = req.body;
+
+        // Validate input
+        if (!userId || !message || !message.trim()) {
             return res.status(400).json({
-                message:"User ID and message are required",
+                message: "User ID and message are required",
             });
         }
-        const currentConversationId=conversationId||`conversation_${Date.now()}`;
-        const response=await ai.models.generateContent({
-            model:"gemini-2.5-flash",
-            contents:message,
-            config:{
-                systemInstruction:
-                "You are an intelligent AI Student Assistent ."
-                +"Help students with programming, mathematics, science, technology, ."+
-                "college subjects, general knowledge, study planning and problem solving. "+
-                "Explain answers clearly and step by step appropriately. "+
-                "Be friendly, accurate snd concise.",
+
+        // Validate MongoDB user ID
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({
+                message: "Invalid user ID",
+            });
+        }
+
+        const currentConversationId =
+            conversationId || `conversation_${Date.now()}`;
+
+        // Generate AI response using Grok
+        const response = await ai.responses.create({
+            model: "grok-4.7",
+
+            input: [
+                {
+                    role: "system",
+                    content:
+                        "You are an intelligent AI Student Assistant. " +
+                        "Help students with programming, mathematics, science, technology, " +
+                        "college subjects, general knowledge, study planning and problem solving. " +
+                        "Explain answers clearly and step by step when appropriate. " +
+                        "Use simple language for beginners. " +
+                        "Be friendly, accurate and concise.",
+                },
+                {
+                    role: "user",
+                    content: message,
+                },
+            ],
+        });
+
+        const aiResponse = response.output_text;
+
+        if (!aiResponse) {
+            throw new Error("Grok returned an empty response");
+        }
+
+        // Save conversation in MongoDB
+        const chat = new Chat({
+            userId,
+            conversationId: currentConversationId,
+            userMessage: message,
+            aiResponse,
+        });
+
+        await chat.save();
+
+        return res.status(201).json({
+            message: "Chat processed successfully",
+            conversationId: currentConversationId,
+            reply: aiResponse,
+            chat: {
+                id: chat._id,
+                userMessage: chat.userMessage,
+                aiResponse: chat.aiResponse,
+                createdAt: chat.createdAt,
             },
         });
-        const aiResponse=response.text;
-        const chat =new Chat({userId,conversationId:currentConversationId,userMessage:message,aiResponse,
 
+    } catch (error) {
+        console.error("Grok Chat Error:", error);
+
+        return res.status(500).json({
+            message: "Failed to process chat",
+            error: error.message,
         });
-    
-    await chat.save();
-
-    return res.status(201).json({
-        message:"Chat proceeded successfully",
-        conversationId:currentConversationId,
-        reply:aiResponse,
-        chat:{
-            id:chat._id,
-            userMessage:chat.userMessage,
-            aiResponse:chat.aiResponse,
-            createdAt:chat.createdAt,
-        },
-    });
-}
-catch(error){
-    console.error("😢Chat error:",error);
-    return res.status(500).json({
-        message:"Failed to process chat",
-       error: error.message,
-    });
-}
+    }
 };
 
+
+// =====================================
+// GET CHAT HISTORY
+// =====================================
 const getChatHistory = async (req, res) => {
     try {
         const { conversationId } = req.params;
 
-        console.log("================================");
-        console.log("HISTORY REQUEST");
-        console.log("Conversation ID:", conversationId);
-
         const chats = await Chat.find({
-            conversationId: conversationId,
+            conversationId,
         }).sort({
             createdAt: 1,
         });
-
-        console.log("FOUND CHATS:", chats.length);
-        console.log("CHAT DOCUMENTS:", chats);
 
         return res.status(200).json({
             message: "Chat history fetched successfully",
@@ -86,38 +123,53 @@ const getChatHistory = async (req, res) => {
         });
     }
 };
-const deleteChatHistory=async(req,res)=>{
-    try{
-        const{conversationId}=req.params;
-        
-const result=await Chat.deleteMany({
-    
-    conversationId,
-});
-if(result.deletedCount===0){
-    return res.status(404).json({
-        message:"conversation not found",
-    });
-}
-return res.status(200).json({
-    message:"Conversataion deleted Successfully!",
-    
-    deletedCount:result.deletedCount,
-});
-    }catch(error){
-        console.error("😢Deleted conversation error:",error);
+
+
+// =====================================
+// DELETE CHAT HISTORY
+// =====================================
+const deleteChatHistory = async (req, res) => {
+    try {
+        const { conversationId } = req.params;
+
+        const result = await Chat.deleteMany({
+            conversationId,
+        });
+
+        if (result.deletedCount === 0) {
+            return res.status(404).json({
+                message: "Conversation not found",
+            });
+        }
+
+        return res.status(200).json({
+            message: "Conversation deleted successfully",
+            deletedCount: result.deletedCount,
+        });
+
+    } catch (error) {
+        console.error("Delete conversation error:", error);
+
         return res.status(500).json({
-            message:"Failed to delete conversation",
-            error:error.message
+            message: "Failed to delete conversation",
+            error: error.message,
         });
     }
-}
+};
 
+
+// =====================================
+// GET USER CONVERSATIONS
+// =====================================
 const getUserConversations = async (req, res) => {
     try {
         const { userId } = req.params;
 
-        console.log("Getting conversations for user:", userId);
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({
+                message: "Invalid user ID",
+            });
+        }
 
         const conversations = await Chat.aggregate([
             {
@@ -161,7 +213,12 @@ const getUserConversations = async (req, res) => {
         });
     }
 };
-module.exports={
+
+
+// =====================================
+// EXPORT CONTROLLERS
+// =====================================
+module.exports = {
     sendMessage,
     getChatHistory,
     deleteChatHistory,
