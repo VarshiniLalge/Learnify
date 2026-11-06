@@ -1,13 +1,6 @@
+
 const mongoose = require("mongoose");
-const OpenAI = require("openai");
-
 const Chat = require("../models/Chat");
-
-// Initialize Grok API
-const ai = new OpenAI({
-    apiKey: process.env.GROK_API_KEY,
-    baseURL: "https://api.x.ai/v1",
-});
 
 // =====================================
 // SEND CHAT MESSAGE USING GROK
@@ -32,32 +25,63 @@ const sendMessage = async (req, res) => {
             });
         }
 
+        // Check Grok API key
+        const apiKey = process.env.GROK_API_KEY;
+
+        if (!apiKey) {
+            console.error("GROK_API_KEY is missing!");
+
+            return res.status(500).json({
+                message: "Grok API key is missing. Please configure GROK_API_KEY in Render.",
+            });
+        }
+
         const currentConversationId =
             conversationId || `conversation_${Date.now()}`;
 
-        // Generate AI response using Grok
-        const response = await ai.responses.create({
-            model: "grok-4.7",
-
-            input: [
-                {
-                    role: "system",
-                    content:
-                        "You are an intelligent AI Student Assistant. " +
-                        "Help students with programming, mathematics, science, technology, " +
-                        "college subjects, general knowledge, study planning and problem solving. " +
-                        "Explain answers clearly and step by step when appropriate. " +
-                        "Use simple language for beginners. " +
-                        "Be friendly, accurate and concise.",
+        // Generate response using Grok
+        const response = await fetch(
+            "https://api.x.ai/v1/chat/completions",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiKey}`,
                 },
-                {
-                    role: "user",
-                    content: message,
-                },
-            ],
-        });
+                body: JSON.stringify({
+                    model: "grok-4.7",
+                    messages: [
+                        {
+                            role: "system",
+                            content:
+                                "You are an intelligent AI Student Assistant. " +
+                                "Help students with programming, mathematics, science, technology, " +
+                                "college subjects, general knowledge, study planning and problem solving. " +
+                                "Explain answers clearly and step by step when appropriate. " +
+                                "Use simple language for beginners. " +
+                                "Be friendly, accurate and concise.",
+                        },
+                        {
+                            role: "user",
+                            content: message,
+                        },
+                    ],
+                }),
+            }
+        );
 
-        const aiResponse = response.output_text;
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error("Grok API Error:", data);
+
+            throw new Error(
+                data.error?.message || "Grok API request failed"
+            );
+        }
+
+        const aiResponse =
+            data.choices?.[0]?.message?.content;
 
         if (!aiResponse) {
             throw new Error("Grok returned an empty response");
