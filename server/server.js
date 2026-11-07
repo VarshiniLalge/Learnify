@@ -19,29 +19,57 @@ const progressRoutes = require("./routes/progressRoutes");
 const summaryRoutes = require("./routes/summaryRoutes");
 
 
+
 const allowedOrigins = [
     "http://localhost:3000",
-    "https://learnify-frontend.vercel.app",
-    "https://learnify-client-uqtney8lz-v-f8d6.vercel.app",
-    "https://learnify-client-nsm6e3b8t-v-f8d6.vercel.app",
-    "https://learnify-client-iykuw5arz-v-f8d6.vercel.app"
+    "https://learnify-frontend.vercel.app"
 ];
 
 const corsOptions = {
     origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
+
+        // Allow requests without an origin
+        if (!origin) {
+            return callback(null, true);
+        }
+
+        // Allow permanent frontend domains
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+
+        // Allow preview deployments belonging to Learnify
+        const isLearnifyPreview =
+            /^https:\/\/learnify-client-[a-z0-9]+-v-f8d6\.vercel\.app$/i.test(origin);
+
+        if (isLearnifyPreview) {
             return callback(null, true);
         }
 
         console.log("Blocked CORS origin:", origin);
+
         return callback(new Error("Not allowed by CORS: " + origin));
     },
+
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
+
+    methods: [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH",
+        "OPTIONS"
+    ],
+
+    allowedHeaders: [
+        "Content-Type",
+        "Authorization"
+    ]
 };
 
 app.use(cors(corsOptions));
+
 
 
 // =====================================
