@@ -43,20 +43,43 @@ const Login = ()=>{
     }
     
   };
-  const handleGoogleSuccess=async(credentialResponse)=>{
-    try{
-      setError("");
-      const response=await axios.post("https://learnify-backend-x592.onrender.com/api/auth/google",{
-        credential:credentialResponse.credential,
-      });
-      localStorage.setItem("token",response.data.token);
-      localStorage.removeItem("user");
-      navigate("/dashboard");
-    }catch(err){
-      console.error("Google login error:",err);
-      setError(err.response?.data?.message||"Google authentication failed.");
+  const handleGoogleSuccess = async (credentialResponse) => {
+  try {
+    setError("");
+
+    const response = await axios.post(
+      "https://learnify-backend-x592.onrender.com/api/auth/google",
+      {
+        credential: credentialResponse.credential,
+      }
+    );
+
+    console.log("GOOGLE LOGIN RESPONSE:", response.data);
+
+    // Save JWT token
+    localStorage.setItem("token", response.data.token);
+
+    // Save MongoDB user details
+    if (response.data.user) {
+      localStorage.setItem(
+        "userId",
+        JSON.stringify(response.data.user)
+      );
+    } else {
+      setError("User details were not received from the server.");
+      return;
     }
-  };
+
+    navigate("/dashboard");
+
+  } catch (err) {
+    console.error("Google login error:", err);
+
+    setError(
+      err.response?.data?.message || "Google authentication failed."
+    );
+  }
+};
   return(
     <div className="login-container">
       <div className="login-box">

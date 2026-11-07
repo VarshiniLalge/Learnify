@@ -131,6 +131,7 @@ const loginUser = async (req, res) => {
 // ===============================
 // GOOGLE LOGIN
 // ===============================
+
 const googleLogin = async (req, res) => {
   try {
     const { credential } = req.body;
@@ -141,7 +142,7 @@ const googleLogin = async (req, res) => {
       });
     }
 
-    // Verify Google credential
+    // Verify Google account
     const ticket = await googleClient.verifyIdToken({
       idToken: credential,
       audience: process.env.GOOGLE_CLIENT_ID,
@@ -149,57 +150,78 @@ const googleLogin = async (req, res) => {
 
     const payload = ticket.getPayload();
 
-    if (!payload) {
+    if (!payload || !payload.email || !payload.sub) {
       return res.status(401).json({
         message: "Invalid Google credential",
       });
     }
 
-    /*
-      Google information is ONLY used temporarily
-      to verify the user.
+    if (!payload.email_verified) {
+      return res.status(401).json({
+        message: "Google email is not verified",
+      });
+    }
 
-      We DO NOT save:
-      - Google ID
-      - Google email
-      - Google name
-      - Google profile picture
-
-      into MongoDB.
-    */
-
-    const googleEmail = payload.email;
+    const googleEmail = payload.email.toLowerCase();
     const googleName = payload.name || "Google User";
 
-    // Create JWT without creating MongoDB user
+    // Find existing account in MongoDB
+    let user = await User.findOne({
+      email: googleEmail,
+    });
+
+    if (!user) {
+      // Create a new MongoDB account
+      user = await User.create({
+        name: googleName,
+        email: googleEmail,
+        googleId: payload.sub,
+        password: await bcrypt.hash(
+          require("crypto").randomBytes(32).toString("hex"),
+          10
+        ),
+      });
+    } else {
+      // Link Google account to existing account
+      if (user.googleId && user.googleId !== payload.sub) {
+        return res.status(409).json({
+          message: "This email is linked to another Google account",
+        });
+      }
+
+      if (!user.googleId) {
+        user.googleId = payload.sub;
+        await user.save();
+      }
+    }
+
+    // Generate JWT using MongoDB user ID
     const token = jwt.sign(
       {
-        googleUser: true,
-        email: googleEmail,
-        name: googleName,
+        userId: user._id,
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: "1d",
+        expiresIn: "7d",
       }
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "Google login successful",
-
       token,
-
       user: {
-        name: googleName,
-        email: googleEmail,
+        id: user._id,
+        name: user.name,
+        email: user.email,
       },
     });
 
   } catch (error) {
     console.error("Google login error:", error);
 
-    res.status(401).json({
-      message: "Google authentication failed",
+    return res.status(500).json({
+      message: "Google login failed",
+      error: error.message,
     });
   }
 };
