@@ -41,7 +41,7 @@ const sendMessage = async (req, res) => {
 
         // Generate response using Grok
         const response = await fetch(
-            "https://api.x.ai/v1/chat/completions",
+            "https://api.groq.com/openai/v1/chat/completions",
             {
                 method: "POST",
                 headers: {
@@ -49,7 +49,7 @@ const sendMessage = async (req, res) => {
                     "Authorization": `Bearer ${apiKey}`,
                 },
                 body: JSON.stringify({
-                    model: "grok-4.7",
+                    model: : "openai/gpt-oss-120b",
                     messages: [
                         {
                             role: "system",
