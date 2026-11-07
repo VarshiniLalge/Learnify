@@ -18,12 +18,11 @@ const plannerRoutes = require("./routes/plannerRoutes");
 const progressRoutes = require("./routes/progressRoutes");
 const summaryRoutes = require("./routes/summaryRoutes");
 
-// =====================================
-// CORS CONFIGURATION
-// =====================================
+
 const allowedOrigins = [
     "http://localhost:3000",
     "https://learnify-frontend.vercel.app",
+    "https://learnify-client-uqtney8lz-v-f8d6.vercel.app",
     "https://learnify-client-nsm6e3b8t-v-f8d6.vercel.app",
     "https://learnify-client-iykuw5arz-v-f8d6.vercel.app"
 ];
@@ -35,7 +34,7 @@ const corsOptions = {
         }
 
         console.log("Blocked CORS origin:", origin);
-        return callback(null, false);
+        return callback(new Error("Not allowed by CORS: " + origin));
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
@@ -43,6 +42,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
 
 // =====================================
 // BODY PARSING
