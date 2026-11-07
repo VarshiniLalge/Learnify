@@ -201,13 +201,16 @@ return (
                 <h2>AI Assistant</h2>
 
                 <button
-                    className="new-chat-btn"
-                    onClick={() => {
-                        window.location.reload();
-                    }}
-                >
-                    + New Chat
-                </button>
+    className="new-chat-btn"
+    onClick={() => {
+        setConversationId(`conversation_${Date.now()}`);
+        setMessages([]);
+        setMessage("");
+        setLoading(false);
+    }}
+>
+    + New Chat
+</button>
             </div>
 
             <div className="conversation-list">
