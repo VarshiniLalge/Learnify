@@ -26,13 +26,13 @@ const sendMessage = async (req, res) => {
         }
 
         // Check Grok API key
-        const apiKey = process.env.GROK_API_KEY;
+        const apiKey = process.env.GROQ_API_KEY;
 
         if (!apiKey) {
-            console.error("GROK_API_KEY is missing!");
+            console.error("GROQ_API_KEY is missing!");
 
             return res.status(500).json({
-                message: "Grok API key is missing. Please configure GROK_API_KEY in Render.",
+                message: "GroQ API key is missing. Please configure GROQ_API_KEY in Render.",
             });
         }
 
