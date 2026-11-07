@@ -17,15 +17,30 @@ const summaryRoutes = require("./routes/summaryRoutes");
 
 
 
-app.use(
-    cors({
-        origin: [
-            "http://localhost:3000",
-            "https://learnify-client-two.vercel.app",
-        ],
-        credentials: true,
-    })
-);
+
+
+
+const allowedOrigins = [
+    "http://localhost:3000",
+    "https://learnify-frontend.vercel.app",
+    "https://learnify-client-nsm6e3b8t-v-f8d6.vercel.app"
+];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        // Allow requests without an origin, such as server-to-server requests
+        if (!origin || allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+
+        console.log("CORS blocked origin:", origin);
+        return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 
 
 app.use(express.json());
