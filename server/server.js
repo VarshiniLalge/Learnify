@@ -20,9 +20,11 @@ const summaryRoutes = require("./routes/summaryRoutes");
 
 
 
+
 const allowedOrigins = [
     "http://localhost:3000",
-    "https://learnify-frontend.vercel.app"
+    "https://learnify-frontend.vercel.app",
+    "https://learnify-client-two.vercel.app"
 ];
 
 const corsOptions = {
@@ -33,16 +35,8 @@ const corsOptions = {
             return callback(null, true);
         }
 
-        // Allow permanent frontend domains
+        // Allow registered frontend domains
         if (allowedOrigins.includes(origin)) {
-            return callback(null, true);
-        }
-
-        // Allow preview deployments belonging to Learnify
-        const isLearnifyPreview =
-            /^https:\/\/learnify-client-[a-z0-9]+-v-f8d6\.vercel\.app$/i.test(origin);
-
-        if (isLearnifyPreview) {
             return callback(null, true);
         }
 
@@ -69,6 +63,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
 
 
 
