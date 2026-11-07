@@ -59,6 +59,7 @@ useEffect(() => {
                 text:userMessage,
             },
     ]);
+    
     setMessage("");
     setLoading(true);
     try{
@@ -78,6 +79,12 @@ console.log("AI REPLY:", data.reply);
             },
 
         ]);
+        // Refresh Recent Chats after saving the message
+const conversationData = await getUserConversations(userId);
+
+setConversations(
+    conversationData.conversations || []
+);
     }
     catch(error){
         console.error("Chat error:",error);
