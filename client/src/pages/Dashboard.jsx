@@ -17,8 +17,8 @@ const Dashboard=()=>{
                 <div className="sidebar-logo">
                     <div className="logo-icon">🤖</div>
                 <div>
-                <h2>AI Study</h2>
-                <span>Assistant</span>
+                <h2>Learnify</h2>
+                <span>AI Assistant</span>
                 </div>
                   </div>
                   <nav className="sidebar-menu">
